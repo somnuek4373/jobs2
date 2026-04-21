@@ -266,7 +266,7 @@ def login_page():
     _, col, _ = st.columns([1, 1.1, 1])
     with col:
         st.markdown('<div class="login-outer">', unsafe_allow_html=True)
-        st.markdown("#### 🔐 เข้าสู่ระบบ")
+        st.markdown(<h1 style="color:#8B0000; font-size:1.9rem; font-weight:800; margin:10px 0 4px;">เข้าสู่ระบบ</h1>)
         username = st.text_input("ชื่อผู้ใช้", placeholder="กรอกชื่อผู้ใช้", key="login_user")
         password = st.text_input("รหัสผ่าน", type="password", placeholder="กรอกรหัสผ่าน", key="login_pw")
         st.markdown("")
