@@ -259,7 +259,7 @@ def login_page():
 <div style="text-align:center; padding:48px 0 0;">
   <div style="font-size:3.2rem;">📋</div>
   <h1 style="color:#8B0000; font-size:1.9rem; font-weight:800; margin:10px 0 4px;">ระบบแจกแจงงาน</h1>
-  <p style="color:#999; font-size:.92rem; margin:0;">Task Assignment System</p>
+  <p style="color:#999; font-size:.92rem; margin:0;"></p>
 </div>
 """, unsafe_allow_html=True)
 
