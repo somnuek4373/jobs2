@@ -78,13 +78,28 @@ html, body, [class*="css"] { font-family: 'Sarabun', 'TH Sarabun New', sans-seri
 
 /* Sidebar */
 section[data-testid="stSidebar"] > div:first-child {
-    background: linear-gradient(180deg, #8B0000 0%, #B71C1C 40%, #C62828 100%);
+    background: linear-gradient(180deg, #5D0000 0%, #7B0000 40%, #8B0000 100%);
     border-right: none;
 }
 section[data-testid="stSidebar"] label,
 section[data-testid="stSidebar"] p,
 section[data-testid="stSidebar"] span,
-section[data-testid="stSidebar"] div { color: #fff !important; }
+section[data-testid="stSidebar"] div { color: #FFFFFF !important; }
+
+/* Sidebar nav buttons – ให้ตัวอักษรชัดขึ้น */
+section[data-testid="stSidebar"] .stButton > button {
+    color: #FFFFFF !important;
+    font-size: 0.97rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4) !important;
+}
+
+/* ชื่อผู้ใช้ใน sidebar */
+section[data-testid="stSidebar"] [style*="font-weight:700"],
+section[data-testid="stSidebar"] [style*="font-weight: 700"] {
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5) !important;
+}
 
 /* All buttons → red theme */
 .stButton > button {
@@ -105,16 +120,20 @@ section[data-testid="stSidebar"] div { color: #fff !important; }
 }
 .stButton > button:active { transform: translateY(0) !important; }
 
-/* Sidebar buttons – ghost style */
+/* Sidebar buttons – ghost style ปรับให้อ่านง่ายขึ้น */
 section[data-testid="stSidebar"] .stButton > button {
-    background: rgba(255,255,255,0.12) !important;
-    border: 1px solid rgba(255,255,255,0.25) !important;
+    background: rgba(255,255,255,0.15) !important;
+    border: 1px solid rgba(255,255,255,0.35) !important;
     text-align: left !important;
     justify-content: flex-start !important;
     box-shadow: none !important;
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+    font-size: 0.97rem !important;
 }
 section[data-testid="stSidebar"] .stButton > button:hover {
-    background: rgba(255,255,255,0.25) !important;
+    background: rgba(255,255,255,0.28) !important;
+    border-color: rgba(255,255,255,0.55) !important;
     transform: none !important;
     box-shadow: none !important;
 }
@@ -257,10 +276,10 @@ def render_sidebar():
   <div style="font-size:.75rem; opacity:.75;">Task Assignment System</div>
 </div>
 <hr style="border-color:rgba(255,255,255,.25) !important; margin:0 0 12px !important;"/>
-<div style="background:rgba(255,255,255,.15); border-radius:11px; padding:12px 14px; margin-bottom:14px; text-align:center;">
+<div style="background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.3); border-radius:11px; padding:12px 14px; margin-bottom:14px; text-align:center;">
   <div style="font-size:1.35rem;">👤</div>
-  <div style="font-weight:700; font-size:.9rem;">{user.get('display_name', user['username'])}</div>
-  <div style="font-size:.72rem; opacity:.75;">{user.get('role','user')}</div>
+  <div style="font-weight:700; font-size:.95rem; color:#FFFFFF; text-shadow:0 1px 3px rgba(0,0,0,.5);">{user.get('display_name', user['username'])}</div>
+  <div style="font-size:.78rem; color:#FFCDD2; font-weight:500; margin-top:2px;">{user.get('role','user')}</div>
 </div>
 """, unsafe_allow_html=True)
 
