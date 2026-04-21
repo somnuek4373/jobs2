@@ -214,11 +214,50 @@ section[data-testid="stSidebar"] .stButton > button:hover {
     color: #2d0000 !important;
 }
 
-/* Selectbox selected text */
+/* ── Selectbox: fix dark background ── */
+/* Container */
+.stSelectbox [data-baseweb="select"] > div,
+[data-testid="stSelectbox"] > div > div > div {
+    background-color: #fff !important;
+    border: 1.5px solid #FFCDD2 !important;
+    border-radius: 9px !important;
+}
+/* Selected value & placeholder text */
 .stSelectbox [data-baseweb="select"] span,
-.stSelectbox [data-baseweb="select"] div {
+.stSelectbox [data-baseweb="select"] div,
+[data-baseweb="select"] [data-baseweb="single-value"],
+[data-baseweb="select"] input {
+    background-color: transparent !important;
     color: #1a1a1a !important;
 }
+/* Dropdown popover/menu */
+[data-baseweb="popover"] > div,
+[data-baseweb="menu"],
+[data-baseweb="menu"] ul {
+    background-color: #fff !important;
+    border: 1px solid #FFCDD2 !important;
+    border-radius: 9px !important;
+}
+/* Dropdown option items */
+[data-baseweb="menu"] li,
+[data-baseweb="option"] {
+    background-color: #fff !important;
+    color: #1a1a1a !important;
+}
+/* Hover state */
+[data-baseweb="menu"] li:hover,
+[data-baseweb="option"]:hover {
+    background-color: #FFEBEE !important;
+    color: #8B0000 !important;
+}
+/* Selected option */
+[data-baseweb="option"][aria-selected="true"] {
+    background-color: #FFCDD2 !important;
+    color: #8B0000 !important;
+    font-weight: 600 !important;
+}
+/* Dropdown arrow */
+[data-baseweb="select"] svg { fill: #C62828 !important; }
 
 /* Inputs */
 .stTextInput > div > div > input,
@@ -233,10 +272,6 @@ section[data-testid="stSidebar"] .stButton > button:hover {
 .stTextArea > div > div > textarea:focus {
     border-color: #C62828 !important;
     box-shadow: 0 0 0 3px rgba(198,40,40,.12) !important;
-}
-.stSelectbox > div > div > div {
-    border-radius: 9px !important;
-    border: 1.5px solid #FFCDD2 !important;
 }
 
 /* Tabs */
