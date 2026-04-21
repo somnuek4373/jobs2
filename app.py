@@ -626,7 +626,7 @@ def page_assignments():
     task_opts   = ["— ยังไม่มีงาน —"] + [t["name"] for t in tasks]
     name_to_tid = {t["name"]: t["id"] for t in tasks}
 
-    tab_assign, tab_swap = st.tabs(["📋 มอบหมายงาน", "🔄 สลับงาน"])
+    tab_assign, tab_swap, tab_reset = st.tabs(["📋 มอบหมายงาน", "🔄 สลับงาน", "🗑️ ล้างงานวันนี้"])
 
     # ── TAB ASSIGN ──
     with tab_assign:
@@ -715,6 +715,73 @@ def page_assignments():
                 _save("assignments", assignments)
                 st.success(f"✅ สลับงานระหว่าง **{sel1}** ↔ **{sel2}** เรียบร้อย!")
                 st.rerun()
+
+    # ── TAB RESET ──
+    with tab_reset:
+        assigned_count   = len([a for a in assignments if a.get("task_id")])
+        unassigned_count = len(employees) - assigned_count
+
+        st.markdown(
+            "<div style=\"background:#fff3cd;border-left:5px solid #f0a500;"
+            "border-radius:10px;padding:18px 22px;margin-bottom:20px;\">"
+            "<div style=\"font-size:1.1rem;font-weight:700;color:#7d4e00;\">⚠️ คำเตือน</div>"
+            "<div style=\"color:#5a3800;margin-top:6px;font-size:.95rem;\">"
+            "การล้างการแจกแจงจะ <b>ยกเลิกงานที่มอบหมายไว้ทั้งหมด</b> "
+            "ทุกคนจะกลับสู่สถานะ &ldquo;ยังไม่มีงาน&rdquo;<br>"
+            "ใช้เมื่อต้องการเริ่มจัดงานใหม่ในวันถัดไป"
+            "</div></div>",
+            unsafe_allow_html=True
+        )
+
+        col_s1, col_s2, col_s3 = st.columns(3)
+        col_s1.markdown(
+            f"<div class=\"metric-card\">"
+            f"<div class=\"metric-num\">{len(employees)}</div>"
+            f"<div class=\"metric-label\">พนักงานทั้งหมด</div></div>",
+            unsafe_allow_html=True)
+        col_s2.markdown(
+            f"<div class=\"metric-card\">"
+            f"<div class=\"metric-num\" style=\"color:#2e7d32;\">{assigned_count}</div>"
+            f"<div class=\"metric-label\">มีงานแล้ว</div></div>",
+            unsafe_allow_html=True)
+        col_s3.markdown(
+            f"<div class=\"metric-card\">"
+            f"<div class=\"metric-num\" style=\"color:#e65100;\">{unassigned_count}</div>"
+            f"<div class=\"metric-label\">ยังไม่มีงาน</div></div>",
+            unsafe_allow_html=True)
+
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        if assigned_count == 0:
+            st.info("✅ ไม่มีการแจกแจงงานอยู่ในขณะนี้ — พร้อมจัดงานใหม่ได้เลย")
+        else:
+            st.markdown("#### เลือกว่าต้องการล้างแบบไหน")
+            reset_mode = st.radio(
+                "โหมดการล้าง",
+                ["ล้างการแจกแจงทั้งหมด (พนักงานทุกคน)",
+                 "ล้างเฉพาะพนักงานที่ได้รับงานแล้ว"],
+                key="reset_mode",
+                label_visibility="collapsed"
+            )
+            st.markdown("<br>", unsafe_allow_html=True)
+            confirm = st.checkbox("✅ ฉันเข้าใจแล้ว และต้องการล้างการแจกแจงจริงๆ", key="reset_confirm")
+
+            if confirm:
+                btn_col, _ = st.columns([1, 2])
+                if btn_col.button("🗑️ ล้างการแจกแจงเดี๋ยวนี้", use_container_width=True):
+                    if "ทั้งหมด" in reset_mode:
+                        _save("assignments", [])
+                    else:
+                        kept = [a for a in assignments if not a.get("task_id")]
+                        _save("assignments", kept)
+                    st.success(
+                        f"✅ ล้างเรียบร้อย! ({assigned_count} รายการถูกล้าง) "
+                        "— พร้อมจัดงานวันใหม่แล้ว 🎉"
+                    )
+                    st.rerun()
+            else:
+                st.caption("☝️ กรุณาติ๊กยืนยันก่อนกดล้าง")
+
 
 def _upsert_assignment(assignments: list, emp_id: str, task_id):
     for a in assignments:
