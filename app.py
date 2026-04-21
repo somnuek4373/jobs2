@@ -203,8 +203,26 @@ hr { border-color: #FFCDD2 !important; margin: 14px 0 !important; }
 /* Hide streamlit chrome */
 #MainMenu, footer, header { visibility: hidden; }
 
-/* Sidebar toggle button */
-#sidebar-toggle-btn {
+/* Fix text contrast - ensure readable text on light backgrounds */
+.stTextInput label, .stTextArea label,
+.stSelectbox label, .stCheckbox label,
+.stRadio label, .stNumberInput label {
+    color: #2c2c2c !important;
+    font-weight: 500 !important;
+}
+.stTabs [data-baseweb="tab"] { color: #8B0000 !important; }
+.stTabs [aria-selected="true"] { color: #fff !important; }
+.metric-label { color: #555 !important; }
+.stAlert p, .stAlert div { color: #1a1a1a !important; }
+.stCaption { color: #555 !important; }
+.stMarkdown p, .stMarkdown li, .stMarkdown span { color: #1a1a1a; }
+</style>
+""", unsafe_allow_html=True)
+
+    # Sidebar toggle button via components.html so JS can reach parent window
+    components.html("""
+<style>
+#tog {
     position: fixed;
     top: 14px;
     left: 14px;
@@ -215,35 +233,30 @@ hr { border-color: #FFCDD2 !important; margin: 14px 0 !important; }
     color: #fff;
     border: none;
     border-radius: 10px;
-    font-size: 18px;
+    font-size: 20px;
     cursor: pointer;
-    box-shadow: 0 3px 12px rgba(139,0,0,.4);
+    box-shadow: 0 3px 12px rgba(139,0,0,.45);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.18s, transform 0.18s;
+    transition: background 0.18s, transform 0.15s;
+    font-family: sans-serif;
     line-height: 1;
 }
-#sidebar-toggle-btn:hover {
-    background: #C62828;
-    transform: scale(1.08);
-}
+#tog:hover { background: #C62828; transform: scale(1.1); }
 </style>
-""", unsafe_allow_html=True)
-
-    # Inject toggle button + JS (outside the <style> block)
-    st.markdown("""
-<button id="sidebar-toggle-btn" title="เปิด/ปิด Sidebar" onclick="toggleSidebar()">☰</button>
+<button id="tog" title="เปิด/ปิด Sidebar">☰</button>
 <script>
-function toggleSidebar() {
+document.getElementById('tog').addEventListener('click', function() {
     var btn = window.parent.document.querySelector('[data-testid="collapsedControl"]');
     if (btn) { btn.click(); return; }
-    // fallback: try the expand button
-    var btn2 = window.parent.document.querySelector('button[kind="header"]');
-    if (btn2) btn2.click();
-}
+    var btn2 = window.parent.document.querySelector('[data-testid="stSidebarCollapseButton"] button');
+    if (btn2) { btn2.click(); return; }
+    var btns = window.parent.document.querySelectorAll('button[kind="header"]');
+    if (btns.length) btns[0].click();
+});
 </script>
-""", unsafe_allow_html=True)
+""", height=0)
 
 # ─────────────────────────────────────────
 #  LOGIN PAGE
