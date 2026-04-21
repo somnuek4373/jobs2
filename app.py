@@ -172,22 +172,36 @@ section[data-testid="stSidebar"] .stButton > button:hover {
     margin-bottom: 12px;
 }
 
+/* Labels ทั่วไป — ให้อ่านง่ายบน background ชมพูอ่อน */
+.stTextInput label,
+.stTextArea label,
+.stSelectbox label,
+.stCheckbox label,
+label[data-testid="stWidgetLabel"] {
+    color: #2C0000 !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+}
+
 /* Inputs */
 .stTextInput > div > div > input,
 .stTextArea > div > div > textarea {
     border-radius: 9px !important;
-    border: 1.5px solid #FFCDD2 !important;
+    border: 1.5px solid #E57373 !important;
     background: #fff !important;
     font-family: 'Sarabun', sans-serif !important;
+    color: #1A0000 !important;
+    font-size: 0.97rem !important;
 }
 .stTextInput > div > div > input:focus,
 .stTextArea > div > div > textarea:focus {
     border-color: #C62828 !important;
-    box-shadow: 0 0 0 3px rgba(198,40,40,.12) !important;
+    box-shadow: 0 0 0 3px rgba(198,40,40,.15) !important;
 }
 .stSelectbox > div > div > div {
     border-radius: 9px !important;
-    border: 1.5px solid #FFCDD2 !important;
+    border: 1.5px solid #E57373 !important;
+    color: #1A0000 !important;
 }
 
 /* Tabs */
@@ -233,14 +247,14 @@ def login_page():
 <div style="text-align:center; padding:48px 0 0;">
   <div style="font-size:3.2rem;">📋</div>
   <h1 style="color:#8B0000; font-size:1.9rem; font-weight:800; margin:10px 0 4px;">ระบบแจกแจงงาน</h1>
-  <p style="color:#999; font-size:.92rem; margin:0;">Task Assignment System</p>
+  <p style="color:#555; font-size:.95rem; margin:0; font-weight:500;">Task Assignment System</p>
 </div>
 """, unsafe_allow_html=True)
 
     _, col, _ = st.columns([1, 1.1, 1])
     with col:
         st.markdown('<div class="login-outer">', unsafe_allow_html=True)
-        st.markdown("#### 🔐 เข้าสู่ระบบ")
+        st.markdown("<h4 style='color:#8B0000; font-weight:700;'>🔐 เข้าสู่ระบบ</h4>", unsafe_allow_html=True)
         username = st.text_input("ชื่อผู้ใช้", placeholder="กรอกชื่อผู้ใช้", key="login_user")
         password = st.text_input("รหัสผ่าน", type="password", placeholder="กรอกรหัสผ่าน", key="login_pw")
         st.markdown("")
@@ -257,7 +271,7 @@ def login_page():
                 st.error("❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
 
         st.markdown("""
-<p style="text-align:center; color:#bbb; font-size:.78rem; margin-top:18px;">
+<p style="text-align:center; color:#8B0000; font-size:.82rem; margin-top:18px; font-weight:600; opacity:0.7;">
   ค่าเริ่มต้น: <b>admin</b> / <b>admin123</b>
 </p>
 """, unsafe_allow_html=True)
