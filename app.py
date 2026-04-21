@@ -687,7 +687,7 @@ def page_print():
         show_pos   = st.checkbox("แสดงตำแหน่ง",          value=True)
         show_desc  = st.checkbox("แสดงรายละเอียดงาน",    value=True)
         show_date  = st.checkbox("แสดงวันที่มอบหมาย",    value=False)
-        show_sign  = st.checkbox("มีช่องเซ็นรับทราบ",    value=True)
+        show_sign  = st.checkbox("มีช่องเซ็นรับทราบ",    value=False)
 
     filtered_emp = [e for e in employees if not emp_filter or
                     emp_filter.lower() in f"{e['name']} {e['surname']}".lower()]
