@@ -303,29 +303,6 @@ hr { border-color: #FFCDD2 !important; margin: 14px 0 !important; }
 /* DataFrames */
 .stDataFrame { border-radius: 10px !important; overflow: hidden !important; }
 
-/* ── Sidebar toggle button: always visible ── */
-[data-testid="collapsedControl"] {
-    display: flex !important;
-    visibility: visible !important;
-    background: #8B0000 !important;
-    color: #fff !important;
-    border-radius: 0 8px 8px 0 !important;
-    box-shadow: 3px 0 10px rgba(0,0,0,.3) !important;
-    width: 28px !important;
-    min-height: 48px !important;
-}
-[data-testid="collapsedControl"] svg {
-    fill: #fff !important;
-}
-[data-testid="stSidebarCollapseButton"] button {
-    color: rgba(255,255,255,0.9) !important;
-    background: transparent !important;
-    border: none !important;
-}
-[data-testid="stSidebarCollapseButton"] svg {
-    fill: #fff !important;
-}
-
 /* Hide streamlit chrome */
 #MainMenu, footer, header { visibility: hidden; }
 </style>
