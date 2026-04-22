@@ -303,6 +303,43 @@ hr { border-color: #FFCDD2 !important; margin: 14px 0 !important; }
 /* DataFrames */
 .stDataFrame { border-radius: 10px !important; overflow: hidden !important; }
 
+/* ── Sidebar collapse/expand toggle button ── */
+/* The floating arrow button that shows/hides sidebar */
+[data-testid="collapsedControl"] {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background: #8B0000 !important;
+    border-radius: 0 8px 8px 0 !important;
+    color: #fff !important;
+    box-shadow: 2px 2px 8px rgba(0,0,0,.25) !important;
+    z-index: 999 !important;
+}
+[data-testid="collapsedControl"]:hover {
+    background: #C62828 !important;
+}
+[data-testid="collapsedControl"] svg {
+    fill: #fff !important;
+    stroke: #fff !important;
+}
+/* The « button inside the open sidebar */
+[data-testid="stSidebarCollapseButton"] button,
+button[kind="headerNoPadding"] {
+    visibility: visible !important;
+    color: rgba(255,255,255,0.85) !important;
+    background: transparent !important;
+}
+[data-testid="stSidebarCollapseButton"] button:hover,
+button[kind="headerNoPadding"]:hover {
+    color: #fff !important;
+    background: rgba(255,255,255,0.15) !important;
+}
+[data-testid="stSidebarCollapseButton"] svg,
+button[kind="headerNoPadding"] svg {
+    fill: rgba(255,255,255,0.85) !important;
+    stroke: rgba(255,255,255,0.85) !important;
+}
+
 /* Hide streamlit chrome */
 #MainMenu, footer, header { visibility: hidden; }
 </style>
