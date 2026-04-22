@@ -153,13 +153,12 @@ section[data-testid="stSidebar"] .stButton > button:hover {
     margin-bottom: 12px;
 }
 
-/* Inputs - FIX: เพิ่มสีตัวอักษรให้ชัดเจน */
+/* Inputs */
 .stTextInput > div > div > input,
 .stTextArea > div > div > textarea {
     border-radius: 9px !important;
     border: 1.5px solid #FFCDD2 !important;
     background: #fff !important;
-    color: #222 !important; /* ปรับสีตัวอักษรให้เข้มขึ้น */
     font-family: 'Sarabun', sans-serif !important;
 }
 .stTextInput > div > div > input:focus,
@@ -188,7 +187,7 @@ section[data-testid="stSidebar"] .stButton > button:hover {
 /* Dividers */
 hr { border-color: #FFCDD2 !important; margin: 14px 0 !important; }
 
-/* Login box - FIX: ปรับสีหัวข้อให้ชัดเจน */
+/* Login box */
 .login-outer {
     max-width: 440px;
     margin: 40px auto 0;
@@ -196,10 +195,6 @@ hr { border-color: #FFCDD2 !important; margin: 14px 0 !important; }
     border-radius: 20px;
     padding: 42px 40px 36px;
     box-shadow: 0 8px 32px rgba(139,0,0,.13);
-}
-.login-outer h4 {
-    color: #8B0000 !important; /* ปรับสี "🔐 เข้าสู่ระบบ" ให้เป็นสีแดงเข้ม */
-    font-weight: 800 !important;
 }
 
 /* DataFrames */
@@ -242,7 +237,11 @@ def login_page():
             else:
                 st.error("❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
 
-        # FIX: นำส่วนแสดงรหัสผ่านเริ่มต้นออกเพื่อความปลอดภัย
+        st.markdown("""
+<p style="text-align:center; color:#bbb; font-size:.78rem; margin-top:18px;">
+  ค่าเริ่มต้น: <b>admin</b> / <b>admin123</b>
+</p>
+""", unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
 # ─────────────────────────────────────────
