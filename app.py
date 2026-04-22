@@ -153,12 +153,13 @@ section[data-testid="stSidebar"] .stButton > button:hover {
     margin-bottom: 12px;
 }
 
-/* Inputs */
+/* Inputs - FIX: เพิ่มสีตัวอักษรให้ชัดเจน */
 .stTextInput > div > div > input,
 .stTextArea > div > div > textarea {
     border-radius: 9px !important;
     border: 1.5px solid #FFCDD2 !important;
     background: #fff !important;
+    color: #222 !important; /* ปรับสีตัวอักษรให้เข้มขึ้น */
     font-family: 'Sarabun', sans-serif !important;
 }
 .stTextInput > div > div > input:focus,
@@ -187,7 +188,7 @@ section[data-testid="stSidebar"] .stButton > button:hover {
 /* Dividers */
 hr { border-color: #FFCDD2 !important; margin: 14px 0 !important; }
 
-/* Login box */
+/* Login box - FIX: ปรับสีหัวข้อให้ชัดเจน */
 .login-outer {
     max-width: 440px;
     margin: 40px auto 0;
@@ -196,58 +197,17 @@ hr { border-color: #FFCDD2 !important; margin: 14px 0 !important; }
     padding: 42px 40px 36px;
     box-shadow: 0 8px 32px rgba(139,0,0,.13);
 }
+.login-outer h4 {
+    color: #8B0000 !important; /* ปรับสี "🔐 เข้าสู่ระบบ" ให้เป็นสีแดงเข้ม */
+    font-weight: 800 !important;
+}
 
 /* DataFrames */
 .stDataFrame { border-radius: 10px !important; overflow: hidden !important; }
 
 /* Hide streamlit chrome */
 #MainMenu, footer, header { visibility: hidden; }
-
-/* Fix text contrast globally */
-label, .stTextInput label, .stTextArea label,
-.stSelectbox label, .stCheckbox label,
-.stRadio label, .stNumberInput label,
-[data-testid="stWidgetLabel"] p,
-[data-testid="stWidgetLabel"] span {
-    color: #1a1a1a !important;
-    font-weight: 500 !important;
-}
-.main p, .main li, .block-container p, .block-container li { color: #1a1a1a !important; }
-.stTabs [data-baseweb="tab"] { color: #8B0000 !important; }
-.stTabs [aria-selected="true"] { color: #fff !important; }
-.metric-label { color: #555 !important; }
-.stAlert p, .stAlert div, .stAlert span { color: #1a1a1a !important; }
-small, .stCaption, [data-testid="stCaptionContainer"] { color: #555 !important; }
-.main strong, .block-container strong { color: #1a1a1a !important; }
 </style>
-""", unsafe_allow_html=True)
-
-    # Sidebar toggle — inject button directly into parent document
-    st.markdown("""
-<script>
-(function injectToggle() {
-    var doc = window.parent.document;
-    if (doc.getElementById('__sidebar_toggle_injected__')) return;
-    var btn = doc.createElement('button');
-    btn.id = '__sidebar_toggle_injected__';
-    btn.title = 'เปิด/ปิด Sidebar';
-    btn.textContent = '☰';
-    btn.style.cssText = 'position:fixed!important;top:14px!important;left:14px!important;z-index:2147483647!important;width:42px!important;height:42px!important;background:#8B0000!important;color:#fff!important;border:none!important;border-radius:10px!important;font-size:20px!important;cursor:pointer!important;box-shadow:0 3px 14px rgba(139,0,0,.5)!important;display:flex!important;align-items:center!important;justify-content:center!important;font-family:sans-serif!important;line-height:1!important;transition:background 0.18s!important;';
-    btn.onmouseover = function(){ this.style.background='#C62828'; };
-    btn.onmouseout  = function(){ this.style.background='#8B0000'; };
-    btn.addEventListener('click', function() {
-        var t1 = doc.querySelector('[data-testid="collapsedControl"]');
-        if (t1) { t1.click(); return; }
-        var t2 = doc.querySelector('[data-testid="stSidebarCollapseButton"] button');
-        if (t2) { t2.click(); return; }
-        var t3 = doc.querySelector('button[aria-label="Close sidebar"]');
-        if (t3) { t3.click(); return; }
-        var t4 = doc.querySelector('section[data-testid="stSidebar"] button');
-        if (t4) { t4.click(); }
-    });
-    doc.body.appendChild(btn);
-})();
-</script>
 """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────
@@ -259,7 +219,7 @@ def login_page():
 <div style="text-align:center; padding:48px 0 0;">
   <div style="font-size:3.2rem;">📋</div>
   <h1 style="color:#8B0000; font-size:1.9rem; font-weight:800; margin:10px 0 4px;">ระบบแจกแจงงาน</h1>
-  <p style="color:#999; font-size:.92rem; margin:0;"></p>
+  <p style="color:#999; font-size:.92rem; margin:0;">Task Assignment System</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -282,11 +242,7 @@ def login_page():
             else:
                 st.error("❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
 
-        st.markdown("""
-<p style="text-align:center; color:#bbb; font-size:.78rem; margin-top:18px;">
-  ค่าเริ่มต้น: <b>admin</b> / <b>admin123</b>
-</p>
-""", unsafe_allow_html=True)
+        # FIX: นำส่วนแสดงรหัสผ่านเริ่มต้นออกเพื่อความปลอดภัย
         st.markdown('</div>', unsafe_allow_html=True)
 
 # ─────────────────────────────────────────
