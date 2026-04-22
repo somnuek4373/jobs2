@@ -303,8 +303,43 @@ hr { border-color: #FFCDD2 !important; margin: 14px 0 !important; }
 /* DataFrames */
 .stDataFrame { border-radius: 10px !important; overflow: hidden !important; }
 
-/* Hide streamlit chrome */
+/* Hide streamlit default chrome & sidebar toggle */
 #MainMenu, footer, header { visibility: hidden; }
+
+/* Hide Streamlit's default sidebar toggle buttons */
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapseButton"] {
+    display: none !important;
+}
+
+/* Custom hamburger button */
+#hamburger-btn {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 99999;
+    width: 42px;
+    height: 42px;
+    background: #1e1e1e;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.35);
+    transition: background 0.18s;
+}
+#hamburger-btn:hover { background: #333; }
+#hamburger-btn span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -352,6 +387,49 @@ def login_page():
 # ─────────────────────────────────────────
 def render_sidebar():
     user = st.session_state.current_user
+
+    # Inject hamburger button via JS (runs once per render)
+    components.html("""
+<script>
+(function() {
+  if (document.getElementById('hamburger-btn')) return;
+  var btn = document.createElement('button');
+  btn.id = 'hamburger-btn';
+  btn.setAttribute('aria-label', 'Toggle sidebar');
+  btn.innerHTML = '<span></span><span></span><span></span>';
+  btn.style.cssText = [
+    'position:fixed','top:14px','left:14px','z-index:99999',
+    'width:42px','height:42px','background:#1e1e1e',
+    'border:none','border-radius:8px','cursor:pointer',
+    'display:flex','flex-direction:column',
+    'align-items:center','justify-content:center','gap:5px',
+    'box-shadow:0 2px 8px rgba(0,0,0,.35)'
+  ].join(';');
+  btn.querySelectorAll || (btn.querySelectorAll = function(){return[];});
+  btn.onclick = function() {
+    // Find the actual Streamlit sidebar toggle button in parent frames
+    var frames = [window.parent, window.parent.parent];
+    for (var fi = 0; fi < frames.length; fi++) {
+      try {
+        var doc = frames[fi].document;
+        // Try collapsedControl first (sidebar is hidden)
+        var toggle = doc.querySelector('[data-testid="collapsedControl"] button');
+        if (!toggle) toggle = doc.querySelector('[data-testid="stSidebarCollapseButton"] button');
+        if (!toggle) toggle = doc.querySelector('button[kind="headerNoPadding"]');
+        if (toggle) { toggle.click(); return; }
+      } catch(e) {}
+    }
+  };
+  // Append to parent document body
+  try {
+    window.parent.document.body.appendChild(btn);
+  } catch(e) {
+    document.body.appendChild(btn);
+  }
+})();
+</script>
+""", height=0)
+
     with st.sidebar:
         st.markdown(f"""
 <div style="text-align:center; padding:20px 0 12px;">
