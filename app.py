@@ -77,6 +77,54 @@ html, body, [class*="css"] { font-family: 'Sarabun', 'TH Sarabun New', sans-seri
 .stApp { background: #FDF3F3; }
 
 /* Sidebar */
+/* ── Collapsed sidebar: icon rail ── */
+[data-testid="stSidebar"][aria-expanded="false"] {
+    min-width: 68px !important;
+    max-width: 68px !important;
+}
+/* Hide text portion of nav buttons in collapsed state —
+   each button starts with ICON + 2 spaces + text,
+   we clip after ~2.2rem so only the emoji shows */
+[data-testid="stSidebar"][aria-expanded="false"] .stButton > button {
+    font-size: 1.3rem !important;
+    padding: 10px 4px !important;
+    justify-content: center !important;
+    /* clip text: show emoji only */
+    overflow: hidden !important;
+    max-width: 52px !important;
+    white-space: nowrap !important;
+    text-overflow: clip !important;
+    letter-spacing: -100px !important;
+    /* restore emoji spacing */
+    padding-left: 14px !important;
+}
+/* First char (emoji) always visible */
+[data-testid="stSidebar"][aria-expanded="false"] .stButton > button::first-letter {
+    letter-spacing: 0 !important;
+}
+/* Hide header text & user card when collapsed */
+[data-testid="stSidebar"][aria-expanded="false"] .sb-header .sb-title,
+[data-testid="stSidebar"][aria-expanded="false"] .sb-header .sb-sub,
+[data-testid="stSidebar"][aria-expanded="false"] .sb-user .sb-user-name,
+[data-testid="stSidebar"][aria-expanded="false"] .sb-user .sb-user-role,
+[data-testid="stSidebar"][aria-expanded="false"] hr {
+    display: none !important;
+}
+/* Shrink user card & header when collapsed */
+[data-testid="stSidebar"][aria-expanded="false"] .sb-header,
+[data-testid="stSidebar"][aria-expanded="false"] .sb-user {
+    padding: 8px 0 !important;
+}
+
+/* Sidebar header & user card classes */
+.sb-header { text-align:center; padding:20px 0 12px; }
+.sb-title   { font-size:1.05rem; font-weight:700; margin:6px 0 2px; }
+.sb-sub     { font-size:.75rem; opacity:.75; }
+.sb-user    { background:rgba(255,255,255,.15); border-radius:11px;
+              padding:12px 14px; margin-bottom:14px; text-align:center; }
+.sb-user-name { font-weight:700; font-size:.9rem; }
+.sb-user-role { font-size:.72rem; opacity:.75; }
+
 section[data-testid="stSidebar"] > div:first-child {
     background: linear-gradient(180deg, #8B0000 0%, #B71C1C 40%, #C62828 100%);
     border-right: none;
@@ -303,41 +351,55 @@ hr { border-color: #FFCDD2 !important; margin: 14px 0 !important; }
 /* DataFrames */
 .stDataFrame { border-radius: 10px !important; overflow: hidden !important; }
 
-/* ── Sidebar collapse/expand toggle button ── */
-/* The floating arrow button that shows/hides sidebar */
+/* ── Sidebar: icon-only collapsed mode ── */
+
+/* When sidebar is collapsed → show a slim icon rail instead of hiding */
 [data-testid="collapsedControl"] {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    background: #8B0000 !important;
-    border-radius: 0 8px 8px 0 !important;
-    color: #fff !important;
-    box-shadow: 2px 2px 8px rgba(0,0,0,.25) !important;
-    z-index: 999 !important;
+    display: none !important;
 }
-[data-testid="collapsedControl"]:hover {
-    background: #C62828 !important;
-}
-[data-testid="collapsedControl"] svg {
-    fill: #fff !important;
-    stroke: #fff !important;
-}
-/* The « button inside the open sidebar */
+
+/* Keep the « / » collapse button always visible and styled */
 [data-testid="stSidebarCollapseButton"] button,
 button[kind="headerNoPadding"] {
     visibility: visible !important;
     color: rgba(255,255,255,0.85) !important;
     background: transparent !important;
+    border: none !important;
 }
-[data-testid="stSidebarCollapseButton"] button:hover,
-button[kind="headerNoPadding"]:hover {
-    color: #fff !important;
-    background: rgba(255,255,255,0.15) !important;
+[data-testid="stSidebarCollapseButton"] button:hover {
+    background: rgba(255,255,255,0.2) !important;
 }
 [data-testid="stSidebarCollapseButton"] svg,
 button[kind="headerNoPadding"] svg {
-    fill: rgba(255,255,255,0.85) !important;
-    stroke: rgba(255,255,255,0.85) !important;
+    fill: #fff !important;
+    stroke: #fff !important;
+}
+
+/* Collapsed state: shrink to icon rail width */
+[data-testid="stSidebar"][aria-expanded="false"] {
+    min-width: 64px !important;
+    max-width: 64px !important;
+    width: 64px !important;
+    overflow: hidden !important;
+}
+
+/* In collapsed state hide text labels, keep only the emoji icons */
+[data-testid="stSidebar"][aria-expanded="false"] .stButton > button {
+    font-size: 1.35rem !important;
+    padding: 10px 0 !important;
+    text-align: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    /* Hide text after first 2 chars (emoji) */
+    text-indent: 0 !important;
+    letter-spacing: -0.05em !important;
+}
+
+/* Hide everything in sidebar except buttons & collapse btn when collapsed */
+[data-testid="stSidebar"][aria-expanded="false"] .stMarkdown,
+[data-testid="stSidebar"][aria-expanded="false"] hr {
+    display: none !important;
 }
 
 /* Hide streamlit chrome */
@@ -391,29 +453,30 @@ def render_sidebar():
     user = st.session_state.current_user
     with st.sidebar:
         st.markdown(f"""
-<div style="text-align:center; padding:20px 0 12px;">
+<div class="sb-header">
   <div style="font-size:2.2rem;">📋</div>
-  <div style="font-size:1.05rem; font-weight:700; margin:6px 0 2px;">ระบบแจกแจงงาน</div>
-  <div style="font-size:.75rem; opacity:.75;">Task Assignment System</div>
+  <div class="sb-title">ระบบแจกแจงงาน</div>
+  <div class="sb-sub">Task Assignment System</div>
 </div>
 <hr style="border-color:rgba(255,255,255,.25) !important; margin:0 0 12px !important;"/>
-<div style="background:rgba(255,255,255,.15); border-radius:11px; padding:12px 14px; margin-bottom:14px; text-align:center;">
+<div class="sb-user">
   <div style="font-size:1.35rem;">👤</div>
-  <div style="font-weight:700; font-size:.9rem;">{user.get('display_name', user['username'])}</div>
-  <div style="font-size:.72rem; opacity:.75;">{user.get('role','user')}</div>
+  <div class="sb-user-name">{user.get('display_name', user['username'])}</div>
+  <div class="sb-user-role">{user.get('role','user')}</div>
 </div>
 """, unsafe_allow_html=True)
 
         pages = {
-            "🏠  หน้าหลัก":          "dashboard",
-            "👥  จัดการพนักงาน":      "employees",
-            "📝  จัดการงาน":          "tasks",
-            "🔀  แจกแจงงาน":          "assignments",
-            "🖨️  พิมพ์รายการ A4":    "print_page",
-            "⚙️  ตั้งค่าผู้ใช้":      "settings",
+            "🏠": ("หน้าหลัก",        "dashboard"),
+            "👥": ("จัดการพนักงาน",   "employees"),
+            "📝": ("จัดการงาน",        "tasks"),
+            "🔀": ("แจกแจงงาน",        "assignments"),
+            "🖨️": ("พิมพ์รายการ A4",  "print_page"),
+            "⚙️": ("ตั้งค่าผู้ใช้",   "settings"),
         }
-        for label, key in pages.items():
-            if st.button(label, key=f"nav_{key}", use_container_width=True):
+        for icon, (label, key) in pages.items():
+            btn_label = f"{icon}  {label}"
+            if st.button(btn_label, key=f"nav_{key}", use_container_width=True):
                 st.session_state.page = key
                 st.rerun()
 
